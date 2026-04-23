@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 
 const sequelize = require('./config/db.js');
+const authRoutes = require('./routes/authRoutes');
 
 
 const app = express();
@@ -35,7 +36,10 @@ const apiLimiter = rateLimit({
   max: 100, 
   message: 'Too many requests, please try again later.'
 });
+
+//routes
 app.use('/api/', apiLimiter);
+app.use('/api/auth', authRoutes);
 
 
 
