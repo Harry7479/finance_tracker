@@ -8,6 +8,7 @@ const rateLimit = require('express-rate-limit');
 const sequelize = require('./config/db.js');
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const transactionRoutes = require('./routes/transactionRoutes');
 
 
 const app = express();
@@ -42,6 +43,7 @@ const apiLimiter = rateLimit({
 app.use('/api/', apiLimiter);
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/transactions', transactionRoutes);
 
 
 
