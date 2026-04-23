@@ -10,6 +10,7 @@ const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const transactionRoutes = require('./routes/transactionRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const setupSwagger = require('./config/swagger');
 
 
 const app = express();
@@ -47,6 +48,9 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api', dashboardRoutes);
+
+// Setup Swagger
+setupSwagger(app);
 
 
 

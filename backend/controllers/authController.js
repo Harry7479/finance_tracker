@@ -36,4 +36,36 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+/**
+ * @swagger
+ * /api/auth/logout:
+ *   post:
+ *     summary: Logout a user
+ *     tags: [Auth]
+ *     responses:
+ *       200:
+ *         description: Logged out successfully
+ */
+const logout = async (req, res) => {
+  res.json({ message: 'Logged out successfully' });
+};
+
+/**
+ * @swagger
+ * /api/auth/me:
+ *   get:
+ *     summary: Get current user
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Current user details
+ *       401:
+ *         description: Unauthorized
+ */
+const getMe = async (req, res) => {
+  res.json({ user: req.user });
+};
+
+module.exports = { register, login, logout, getMe };
