@@ -55,15 +55,7 @@ const Register = () => {
             />
           </div>
 
-          <div className="form-group">
-            <select 
-              className="form-select"
-              onChange={(e) => setFormData({...formData, role: e.target.value})}
-            >
-              <option value="user">User</option>
-              <option value="read-only">Read Only</option>
-            </select>
-          </div>
+
 
           <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
             Register
