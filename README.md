@@ -106,4 +106,4 @@ This project uses Swagger for automated, interactive API documentation.
 
 Once your backend server is running, you can view the documentation and test all routes directly in your browser:
 
-👉 **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)**
+swageer url- **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)**
