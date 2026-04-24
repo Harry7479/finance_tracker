@@ -1,16 +1,75 @@
-# React + Vite
+# Personal Finance Tracker - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the React frontend for the Personal Finance Tracker application. It provides a modern, responsive, and highly interactive user interface for managing transactions, viewing financial analytics, and handling user accounts.
 
-Currently, two official plugins are available:
+##  Technologies Used
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Framework**: React 19 (built with Vite)
+- **Routing**: React Router v7 (`react-router-dom`)
+- **State Management**: React Context API
+- **API Requests**: Axios (with centralized interceptors)
+- **Data Visualization**: Recharts (for Dashboard analytics)
+- **Virtualization**: `@tanstack/react-virtual` & `react-virtualized-auto-sizer` (for rendering massive transaction lists without lag)
+- **Notifications**: `react-hot-toast` (for sleek, modern toast alerts)
+- **Date Formatting**: `date-fns`
 
-## React Compiler
+## Project Structure
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```
+frontend/
+├── public/               # Static assets
+├── src/
+│   ├── components/       # Reusable UI components (Navbar, Loader, VirtualTransactionList)
+│   ├── context/          # React Contexts (AuthContext, ThemeContext)
+│   ├── pages/            # Main application views (Dashboard, Login, Transactions, AdminPanel)
+│   ├── services/         # API configuration (Axios instances)
+│   ├── styles/           # CSS files for custom styling
+│   ├── App.jsx           # Main application routing and wrappers
+│   └── main.jsx          # React entry point
+├── .env.example          # Example environment variables
+├── package.json          # Dependencies and scripts
+└── vite.config.js        # Vite bundler configuration
+```
 
-## Expanding the ESLint configuration
+##  Local Setup Instructions
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. **Navigate to the frontend directory**:
+   ```bash
+   cd finance-tracker/frontend
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Configure Environment Variables**:
+   Create a `.env` file in the root of the `frontend` folder (if it doesn't exist) and add your backend API URL. By default, the application will fallback to `http://localhost:3000/api` if this is not provided.
+   ```env
+   VITE_API_URL=http://localhost:3000/api
+   ```
+
+4. **Start the development server**:
+   ```bash
+   npm run dev
+   ```
+
+5. **Open your browser**:
+   Navigate to `http://localhost:5173` (or the port Vite provides) to view the application.
+
+##  Features & Permissions
+
+- **Authentication**: JWT-based login and registration.
+- **Admin Panel**: Only accessible by users with the `admin` role. Admins can view all users, change roles, or delete accounts.
+- **Read-Only Mode**: Users assigned the `read-only` role can view dashboards and transactions but are visually and functionally restricted from adding, editing, or deleting transactions.
+- **Virtualized Lists**: The transaction list can handle thousands of rows simultaneously without slowing down the browser.
+
+##  Building for Production
+
+To create a production-ready build of the frontend, run:
+
+```bash
+npm run build
+```
+
+This will generate a `dist/` directory containing the optimized static files that can be deployed to services like Vercel, Netlify, or an Nginx server.
