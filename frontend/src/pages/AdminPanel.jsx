@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import Navbar from '../components/Navbar';
 import toast from 'react-hot-toast';
 import '../styles/Transactions.css';
 
 const AdminPanel = () => {
-  const [users, setUsers] = useState([]);//grthjyh
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchUsers();
@@ -83,6 +85,13 @@ const handleDeleteUser = async (userId) => {
                     </select>
                   </td>
                   <td>
+                    <button
+                      onClick={() => navigate(`/?userId=${user.id}&userName=${encodeURIComponent(user.name)}`)}
+                      className="action-btn"
+                      style={{ marginRight: '10px', backgroundColor: 'var(--primary-color)', color: 'white' }}
+                    >
+                      View Dashboard
+                    </button>
                     <button
                       onClick={() => handleDeleteUser(user.id)}
                       className="action-btn delete-btn"

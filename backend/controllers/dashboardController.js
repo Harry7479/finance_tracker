@@ -1,14 +1,35 @@
 const { fn, col, literal } = require('sequelize');
 const Transaction = require('../models/Transaction');
+const NodeCache = require('node-cache');
+
+// Cache data for 60 seconds (1 minute)
+const cache = new NodeCache({ stdTTL: 60 });
 
 const dashboardAnalytics = async (req, res) => {
   try {
-    const userId = req.user.id;
+    let targetUserId = req.user.id;
 
-    // --- FIX IS HERE ---
+    // Allow admin to request analytics for a specific user
+    if (req.user.role === 'admin' && req.query.userId) {
+      targetUserId = req.query.userId;
+    }
+
+    const cacheKey = `analytics_${targetUserId}`;
+
+    // 1. Check if we have cached data for this user
+    if (cache.has(cacheKey)) {
+      console.log(`[Cache Hit] Serving analytics for user ${targetUserId}`);
+      return res.json(cache.get(cacheKey));
+    }
+
+    console.log(`[Cache Miss] Calculating analytics for user ${targetUserId}`);
+
+    const whereExpense = { userId: targetUserId, type: 'expense' };
+    const whereAll = { userId: targetUserId };
+
     // Changed col('date') to col('createdAt') in attributes, group, and order
     const monthlySpending = await Transaction.findAll({
-      where: { userId, type: 'expense' },
+      where: whereExpense,
       attributes: [
         [fn('DATE_TRUNC', 'month', col('createdAt')), 'month'],
         [fn('SUM', col('amount')), 'total']
@@ -19,14 +40,14 @@ const dashboardAnalytics = async (req, res) => {
 
 
     const categoryBreakdown = await Transaction.findAll({
-      where: { userId, type: 'expense' },
+      where: whereExpense,
       attributes: ['category', [fn('SUM', col('amount')), 'total']],
       group: ['category']
     });
 
 
     const incomeExpense = await Transaction.findAll({
-      where: { userId },
+      where: whereAll,
       attributes: ['type', [fn('SUM', col('amount')), 'total']],
       group: ['type']
     });
@@ -46,6 +67,9 @@ const dashboardAnalytics = async (req, res) => {
         total: parseFloat(i.dataValues.total) || 0
       }))
     };
+
+    // 5. Store in cache before sending
+    cache.set(cacheKey, result);
 
     res.json(result);
 

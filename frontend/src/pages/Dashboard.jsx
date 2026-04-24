@@ -1,4 +1,5 @@
 import { useEffect, useState, memo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { 
   BarChart, Bar, XAxis, YAxis, Tooltip, Legend, 
   PieChart, Pie, Cell, 
@@ -43,7 +44,7 @@ const CategoryPieChart = memo(({ data }) => {
         <Pie
           data={data}
           cx="50%"
-          cy="50%"
+          cy="40%"
           innerRadius={60}
           outerRadius={80}
           paddingAngle={5}
@@ -60,7 +61,7 @@ const CategoryPieChart = memo(({ data }) => {
           ))}
         </Pie>
         <Tooltip formatter={(value) => `₹${value}`} />
-        <Legend layout="vertical" verticalAlign="middle" align="right" />
+        <Legend layout="horizontal" verticalAlign="bottom" align="center" wrapperStyle={{ paddingTop: '20px' }} />
       </PieChart>
     </ResponsiveContainer>
   );
@@ -97,13 +98,19 @@ const Dashboard = () => {
   const [data, setData] = useState(null); 
   const [loading, setLoading] = useState(true); 
   const [error, setError] = useState(null);
+  const [searchParams] = useSearchParams();
+  const targetUserId = searchParams.get('userId');
+  const targetUserName = searchParams.get('userName');
 
   const fetchAnalytics = async () => {
     try {
       setLoading(true); 
       setError(null);
       
-      const response = await api.get('/dashboard/analytics');
+      const endpoint = targetUserId 
+        ? `/dashboard/analytics?userId=${targetUserId}` 
+        : `/dashboard/analytics`;
+      const response = await api.get(endpoint);
 
       if (response.data) {
         setData(response.data);
@@ -128,7 +135,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchAnalytics();
-  }, []);
+  }, [targetUserId]);
 
   if (loading) return (
     <>
@@ -152,7 +159,7 @@ const Dashboard = () => {
       <Navbar />
       <div className="dashboard-container">
         <header className="dashboard-header">
-          <h2>Financial Overview</h2>
+          <h2>{targetUserName ? `Financial Overview for ${targetUserName}` : "Financial Overview"}</h2>
         </header>
         {data && (
           <div className="dashboard-grid">
