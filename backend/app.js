@@ -23,7 +23,7 @@ app.use(helmet());
 app.use(cors({
   origin: [
     "http://localhost:5173",                    
-    "https://finance-manager-qudh.vercel.app"          
+    "https://finance-tracker-nvwd.onrender.com"          
   ],
   credentials: true
 }));
