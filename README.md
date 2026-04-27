@@ -108,7 +108,7 @@ Once your backend server is running, you can view the documentation and test all
 
 swageer url- **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)**
 
-live url-https://finance-tracker-nvwd.onrender.com
+live url-https://finance-tracker-nvwd.onrender.com/
 
 
 
