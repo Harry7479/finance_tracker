@@ -107,3 +107,7 @@ This project uses Swagger for automated, interactive API documentation.
 Once your backend server is running, you can view the documentation and test all routes directly in your browser:
 
 swageer url- **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)**
+username-harry@gmail.com
+password-12345
+admin-admin@gmail.com
+password-12345
